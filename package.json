@@ -1,6 +1,9 @@
 {
-  "name": "finder-video-thumbnails",
+  "name": "@joaodotwork/finder-video-thumbnails",
   "version": "1.0.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Generate macOS Finder thumbnails for video files that don't have one, using ffmpeg + fileicon.",
   "bin": {
     "finder-video-thumbnails": "./bin/finder-video-thumbnails"

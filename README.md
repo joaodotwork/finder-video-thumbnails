@@ -1,8 +1,8 @@
 # finder-video-thumbnails
 
-[![npm version](https://img.shields.io/npm/v/finder-video-thumbnails.svg)](https://www.npmjs.com/package/finder-video-thumbnails)
-[![npm downloads](https://img.shields.io/npm/dm/finder-video-thumbnails.svg)](https://www.npmjs.com/package/finder-video-thumbnails)
-[![license](https://img.shields.io/npm/l/finder-video-thumbnails.svg)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/@joaodotwork/finder-video-thumbnails.svg)](https://www.npmjs.com/package/@joaodotwork/finder-video-thumbnails)
+[![npm downloads](https://img.shields.io/npm/dm/@joaodotwork/finder-video-thumbnails.svg)](https://www.npmjs.com/package/@joaodotwork/finder-video-thumbnails)
+[![license](https://img.shields.io/npm/l/@joaodotwork/finder-video-thumbnails.svg)](LICENSE)
 [![platform](https://img.shields.io/badge/platform-macOS-lightgrey.svg)](https://www.apple.com/macos)
 
 Generate macOS Finder thumbnails for video files that don't have one, using `ffmpeg` and [`fileicon`](https://github.com/mklement0/fileicon).
@@ -18,13 +18,13 @@ By default, video files in Finder show a generic icon (or a low-res QuickLook pr
 ## Install
 
 ```sh
-npm install -g finder-video-thumbnails
+npm install -g @joaodotwork/finder-video-thumbnails
 ```
 
 Or run without installing:
 
 ```sh
-npx finder-video-thumbnails <folder>
+npx @joaodotwork/finder-video-thumbnails <folder>
 ```
 
 ## Usage
