@@ -1,8 +1,7 @@
 # finder-video-thumbnails
 
-[![npm version](https://img.shields.io/npm/v/@joaodotwork/finder-video-thumbnails.svg)](https://www.npmjs.com/package/@joaodotwork/finder-video-thumbnails)
-[![npm downloads](https://img.shields.io/npm/dm/@joaodotwork/finder-video-thumbnails.svg)](https://www.npmjs.com/package/@joaodotwork/finder-video-thumbnails)
-[![license](https://img.shields.io/npm/l/@joaodotwork/finder-video-thumbnails.svg)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/@joaodotwork%2Ffinder-video-thumbnails.svg)](https://www.npmjs.com/package/@joaodotwork/finder-video-thumbnails)
+[![license](https://img.shields.io/github/license/joaodotwork/finder-video-thumbnails.svg)](LICENSE)
 [![platform](https://img.shields.io/badge/platform-macOS-lightgrey.svg)](https://www.apple.com/macos)
 
 Generate macOS Finder thumbnails for video files that don't have one, using `ffmpeg` and [`fileicon`](https://github.com/mklement0/fileicon).
