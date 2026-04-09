@@ -1,0 +1,40 @@
+{
+  "name": "finder-video-thumbnails",
+  "version": "1.0.0",
+  "description": "Generate macOS Finder thumbnails for video files that don't have one, using ffmpeg + fileicon.",
+  "bin": {
+    "finder-video-thumbnails": "./bin/finder-video-thumbnails"
+  },
+  "scripts": {
+    "test": "echo \"no tests\" && exit 0"
+  },
+  "keywords": [
+    "macos",
+    "finder",
+    "thumbnail",
+    "video",
+    "ffmpeg",
+    "fileicon",
+    "icon",
+    "mov",
+    "mp4"
+  ],
+  "author": "joaodotwork",
+  "license": "MIT",
+  "os": [
+    "darwin"
+  ],
+  "files": [
+    "bin/",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joaodotwork/finder-video-thumbnails.git"
+  },
+  "bugs": {
+    "url": "https://github.com/joaodotwork/finder-video-thumbnails/issues"
+  },
+  "homepage": "https://github.com/joaodotwork/finder-video-thumbnails#readme"
+}

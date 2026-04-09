@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+# finder-video-thumbnails
+# Generate macOS Finder thumbnails for video files using ffmpeg + fileicon.
+#
+# Usage: finder-video-thumbnails [--force] <folder> [seek_seconds]
+#   --force        re-generate icons even if one is already set
+#   seek_seconds   timestamp (in seconds) to grab the frame from. defaults to 1
+
+set -euo pipefail
+
+force=0
+if [[ "${1:-}" == "--force" ]]; then
+  force=1
+  shift
+fi
+
+if [[ $# -lt 1 ]]; then
+  echo "usage: finder-video-thumbnails [--force] <folder> [seek_seconds]" >&2
+  exit 1
+fi
+
+folder="$1"
+seek="${2:-1}"
+
+if [[ ! -d "$folder" ]]; then
+  echo "error: not a directory: $folder" >&2
+  exit 1
+fi
+
+for cmd in ffmpeg fileicon; do
+  if ! command -v "$cmd" >/dev/null 2>&1; then
+    echo "error: '$cmd' not found on PATH" >&2
+    echo "  install with: brew install $cmd" >&2
+    exit 1
+  fi
+done
+
+videos=()
+while IFS= read -r -d '' f; do
+  videos+=("$f")
+done < <(find "$folder" -type f \( \
+  -iname '*.mov' -o \
+  -iname '*.mp4' -o \
+  -iname '*.m4v' -o \
+  -iname '*.avi' -o \
+  -iname '*.mkv' -o \
+  -iname '*.webm' \) -print0)
+
+if [[ ${#videos[@]} -eq 0 ]]; then
+  echo "no video files found in: $folder"
+  exit 0
+fi
+
+tmpdir="$(mktemp -d)"
+trap 'rm -rf "$tmpdir"' EXIT
+
+done_count=0
+skip_count=0
+fail_count=0
+i=0
+
+for video in "${videos[@]}"; do
+  name="${video#$folder/}"
+  ((i++))
+
+  if [[ $force -eq 0 ]] && fileicon test "$video" >/dev/null 2>&1; then
+    echo "skip  $name (already has icon)"
+    ((skip_count++))
+    continue
+  fi
+
+  thumb="$tmpdir/thumb_$i.png"
+  if ! ffmpeg -y -ss "$seek" -i "$video" -frames:v 1 -update 1 \
+        -vf "scale=512:512:force_original_aspect_ratio=decrease,format=rgba,pad=512:512:(ow-iw)/2:(oh-ih)/2:color=black@0" \
+        "$thumb" </dev/null >/dev/null 2>&1; then
+    echo "FAIL  $name (ffmpeg)"
+    ((fail_count++))
+    continue
+  fi
+
+  if ! fileicon set "$video" "$thumb" >/dev/null 2>&1; then
+    echo "FAIL  $name (fileicon)"
+    ((fail_count++))
+    continue
+  fi
+
+  echo "ok    $name"
+  ((done_count++))
+done
+
+echo
+echo "done: $done_count   skipped: $skip_count   failed: $fail_count"
