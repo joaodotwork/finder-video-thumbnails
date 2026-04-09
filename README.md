@@ -29,12 +29,19 @@ npx @joaodotwork/finder-video-thumbnails <folder>
 ## Usage
 
 ```sh
-finder-video-thumbnails [--force] <folder> [seek_seconds]
+finder-video-thumbnails [options] <folder> [seek_seconds]
 ```
 
+**Arguments**
+
 - `<folder>` — folder to process (recursive)
-- `--force` — re-generate icons even if a custom icon is already set
 - `seek_seconds` — timestamp (in seconds) to grab the frame from. Defaults to `1`
+
+**Options**
+
+- `-h, --help` — show help and exit
+- `-V, --version` — print version and exit
+- `--force` — re-generate icons even if a custom icon is already set
 
 ### Examples
 

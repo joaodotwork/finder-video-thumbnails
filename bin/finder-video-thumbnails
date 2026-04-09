@@ -1,21 +1,95 @@
 #!/usr/bin/env bash
 # finder-video-thumbnails
 # Generate macOS Finder thumbnails for video files using ffmpeg + fileicon.
-#
-# Usage: finder-video-thumbnails [--force] <folder> [seek_seconds]
-#   --force        re-generate icons even if one is already set
-#   seek_seconds   timestamp (in seconds) to grab the frame from. defaults to 1
 
 set -euo pipefail
 
+# Resolve the script's real directory (following symlinks) so we can locate
+# the package.json that ships alongside it.
+_src="${BASH_SOURCE[0]}"
+while [[ -h "$_src" ]]; do
+  _dir="$( cd -P "$( dirname "$_src" )" && pwd )"
+  _src="$( readlink "$_src" )"
+  [[ $_src != /* ]] && _src="$_dir/$_src"
+done
+_script_dir="$( cd -P "$( dirname "$_src" )" && pwd )"
+_pkg_json="$_script_dir/../package.json"
+
+read_version() {
+  if [[ -f "$_pkg_json" ]]; then
+    grep '"version"' "$_pkg_json" | head -1 \
+      | sed -E 's/.*"version"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/'
+  else
+    echo "unknown"
+  fi
+}
+
+print_version() {
+  echo "finder-video-thumbnails $(read_version)"
+}
+
+print_help() {
+  cat <<'EOF'
+finder-video-thumbnails — Generate macOS Finder thumbnails for video files
+
+Usage:
+  finder-video-thumbnails [options] <folder> [seek_seconds]
+
+Arguments:
+  <folder>        folder to process (recursive)
+  seek_seconds    timestamp (in seconds) to grab the frame from (default: 1)
+
+Options:
+  -h, --help      show this help and exit
+  -V, --version   print version and exit
+      --force     re-generate icons even if one is already set
+
+Examples:
+  finder-video-thumbnails ~/Movies
+  finder-video-thumbnails ~/Movies 5
+  finder-video-thumbnails --force ~/Movies
+
+Supported formats:
+  .mov  .mp4  .m4v  .avi  .mkv  .webm
+
+Requires:
+  ffmpeg, fileicon (brew install ffmpeg fileicon)
+EOF
+}
+
 force=0
-if [[ "${1:-}" == "--force" ]]; then
-  force=1
-  shift
-fi
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h|--help)
+      print_help
+      exit 0
+      ;;
+    -V|--version)
+      print_version
+      exit 0
+      ;;
+    --force)
+      force=1
+      shift
+      ;;
+    --)
+      shift
+      break
+      ;;
+    -*)
+      echo "error: unknown option: $1" >&2
+      echo "run 'finder-video-thumbnails --help' for usage" >&2
+      exit 1
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
 
 if [[ $# -lt 1 ]]; then
-  echo "usage: finder-video-thumbnails [--force] <folder> [seek_seconds]" >&2
+  echo "usage: finder-video-thumbnails [options] <folder> [seek_seconds]" >&2
+  echo "run 'finder-video-thumbnails --help' for details" >&2
   exit 1
 fi
 
